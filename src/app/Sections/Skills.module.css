@@ -1,0 +1,146 @@
+/* Skills.module.css */
+
+.skills {
+  background: #1a1a1a; /* Deep black background */
+  padding: 40px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.sectionTitle {
+  font-size: 36px; /* Large title */
+  font-weight: bold;
+  color: #00d4ff; /* Cyan color */
+  margin-bottom: 40px;
+}
+
+.skillsGrid {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  height: 600px;
+}
+
+.skillItem {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  background: #2c3e50; /* Dark background for items */
+  border: 2px solid #00d4ff; /* Cyan border */
+  border-radius: 50%; /* Circular shape */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.5); /* Cyan glow effect */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.skillItem:hover {
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.7); /* Pink glow on hover */
+  transform: scale(1.1); /* Slight scale-up on hover */
+}
+
+.skillItem:hover .circleGradient {
+  background: radial-gradient(circle, rgba(255, 105, 180, 0.5) 0%, rgba(0, 0, 0, 0) 70%); /* Pink-to-transparent gradient on hover */
+}
+
+.circleGradient {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, rgba(0, 0, 0, 0) 70%); /* Cyan-to-transparent gradient */
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  transition: background 0.5s ease; /* Gradient transition on hover */
+}
+
+.skillImage {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+/* Mobile viewport styles (up to 768px) */
+@media (max-width: 768px) {
+  .skills {
+    padding: 20px 10px; /* Reduced padding for mobile */
+  }
+
+  .sectionTitle {
+    font-size: 28px; /* Smaller title for mobile */
+    margin-bottom: 20px;
+  }
+
+  .skillsGrid {
+    height: auto; /* Dynamic height for grid layout */
+    max-width: 100%; /* Full width */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 items per row by default */
+    gap: 15px; /* Space between items */
+    justify-items: center; /* Center items horizontally */
+    padding-bottom: 20px;
+  }
+
+  /* Last row with 2 items (rows are 3-3-3-3-2) */
+  .skillItem:nth-child(13),
+  .skillItem:nth-child(14),
+  .skillItem:nth-child(15) {
+    grid-column: span 1; /* Ensure last row items are centered */
+  }
+  .skillItem:nth-child(13) {
+    grid-column: 1 / 2; /* Position first item of last row */
+  }
+  .skillItem:nth-child(14) {
+    grid-column: 2 / 3; /* Position second item of last row */
+  }
+  .skillItem:nth-child(15) {
+    display: none; /* Hide 15th item to maintain 3-3-3-3-2 layout */
+  }
+
+  .skillItem {
+    position: relative; /* Static positioning for grid */
+    left: 0 !important; /* Override absolute positioning */
+    top: 0 !important; /* Override absolute positioning */
+    width: 100px; /* Smaller size for mobile */
+    height: 100px;
+    opacity: 0; /* Start hidden for animation */
+    animation: slideInRow 0.6s ease-out forwards; /* Row-based slide-in animation */
+    animation-delay: calc(var(--row) * 0.3s); /* Staggered delay by row */
+    --row: 1; /* Custom property for row-based animation delay */
+  }
+
+  /* Assign row numbers for animation delays */
+  .skillItem:nth-child(-n+3) { --row: 1; } /* Row 1: Items 1-3 */
+  .skillItem:nth-child(n+4):nth-child(-n+6) { --row: 2; } /* Row 2: Items 4-6 */
+  .skillItem:nth-child(n+7):nth-child(-n+9) { --row: 3; } /* Row 3: Items 7-9 */
+  .skillItem:nth-child(n+10):nth-child(-n+12) { --row: 4; } /* Row 4: Items 10-12 */
+  .skillItem:nth-child(n+13) { --row: 5; } /* Row 5: Items 13-14 */
+
+  .circleGradient {
+    width: 110px; /* Adjusted for smaller item */
+    height: 110px;
+  }
+
+  .skillImage {
+    width: 100px; /* Match item size */
+    height: 100px;
+  }
+
+  /* Animation for mobile row slide-in effect */
+  @keyframes slideInRow {
+    from {
+      opacity: 0;
+      transform: translateY(30px); /* Slide up from below */
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

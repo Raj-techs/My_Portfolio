@@ -1,0 +1,227 @@
+/* Projects.module.css */
+
+.projects {
+  background: #1a1a1a;
+  padding: 40px 20px;
+  text-align: center;
+  position: relative;
+  min-height: 120vh;
+  overflow: hidden;
+}
+
+.sectionTitle {
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: bold;
+  color: #00d4ff;
+  margin-bottom: 40px;
+}
+
+.projectsGrid {
+  display: flex;
+  gap: 20px;
+  height: 70vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  white-space: nowrap;
+  padding: 20px;
+  scrollbar-width: none;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.projectsGrid::-webkit-scrollbar {
+  display: none;
+}
+
+.projectCard {
+  position: relative;
+  min-width: 250px;
+  height: 450px;
+  background: #2c3e50;
+  border-radius: 15px;
+  color: white;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+  transition: transform 0.5s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  scroll-snap-align: start;
+  transform: rotate(var(--rotation));
+}
+
+.projectCard:hover {
+  transform: rotate(0deg) scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.7);
+}
+
+.cardGlow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, rgba(0, 0, 0, 0) 70%);
+  border-radius: 15px;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: background 0.5s ease;
+}
+
+.projectCard:hover .cardGlow {
+  background: radial-gradient(circle, rgba(255, 105, 180, 0.5) 0%, rgba(0, 0, 0, 0) 70%);
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  z-index: 1;
+}
+
+.cardImage {
+  width: 100%;
+  height: 40%;
+  object-fit: cover;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.contentWrapper {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.duration {
+  font-size: clamp(14px, 3vw, 18px);
+  color: #00d4ff;
+  margin-bottom: 10px;
+}
+
+.projectName {
+  font-size: clamp(18px, 4vw, 24px);
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.description {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 15px;
+  flex: 1;
+  overflow: auto;
+  text-align: left;
+  font-size: clamp(12px, 2vw, 14px);
+}
+
+.description li {
+  margin-bottom: 8px;
+  position: relative;
+  padding-left: 12px;
+  white-space: normal;
+}
+
+.description li::before {
+  content: '•';
+  color: #00d4ff;
+  position: absolute;
+  left: 0;
+}
+
+.technologies {
+  font-size: clamp(12px, 2vw, 14px);
+  color: #00d4ff;
+  text-align: left;
+  margin-top: auto;
+  white-space: normal;
+}
+
+.technologies span {
+  font-weight: bold;
+}
+
+.projectNumber {
+  position: absolute;
+  font-size: clamp(4em, 6vw, 6em);
+  color: rgba(1, 163, 1, 0.8);
+  font-weight: bold;
+  bottom: -30px;
+  left: 2px;
+  z-index: 2;
+  line-height: 1;
+  text-shadow: 
+    -2px -2px 0 white,
+    2px -2px 0 white,
+    -2px 2px 0 white,
+    2px 2px 0 white,
+    -3px 0 0 white,
+    3px 0 0 white,
+    0 -3px 0 white,
+    0 3px 0 white;
+}
+
+/* Mobile Viewport (max-width: 768px) */
+@media (max-width: 768px) {
+  .projects {
+    padding: 20px 10px;
+    min-height: 90vh;
+  }
+
+  .projectsGrid {
+    height: 60vh;
+    gap: 10px; /* Reduced gap for tighter scrolling */
+    padding: 10px;
+    scroll-snap-type: x mandatory; /* Enforce snapping to one card */
+    justify-content: flex-start;
+  }
+
+  .projectCard {
+    min-width: calc(100% - 20px); /* Full width minus padding */
+    height: 400px; /* Slightly taller for better content fit */
+    margin: 0 10px; /* Center card with small margins */
+    transform: rotate(0deg); /* Remove rotation for cleaner mobile view */
+  }
+
+  .projectCard:hover {
+    transform: scale(1.02); /* Subtle scale on hover */
+  }
+
+  .cardImage {
+    height: 35%;
+  }
+
+  .contentWrapper {
+    padding: 10px;
+  }
+
+  .projectNumber {
+    font-size: clamp(3em, 5vw, 4em);
+    bottom: -20px;
+  }
+}
+
+/* Tablet Viewport */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .projectsGrid {
+    height: 65vh;
+  }
+
+  .projectCard {
+    min-width: 220px;
+    height: 400px;
+  }
+}
+
+/* Desktop Viewport */
+@media (min-width: 1025px) {
+  .projectsGrid {
+    height: 70vh;
+  }
+
+  .projectCard {
+    min-width: calc((100% - 40px) / 3);
+    height: 450px;
+  }
+}

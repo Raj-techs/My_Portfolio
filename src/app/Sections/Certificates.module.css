@@ -1,0 +1,227 @@
+/* Certificates.module.css */
+
+.certificates {
+  /* background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); */
+  color: white;
+  background: #1a1a1a; /* Deep black background */
+
+  padding: 80px 20px;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #00d4ff, #a239ca);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 60px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Container for Cards */
+.cardContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
+}
+
+/* Individual Card Style */
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s ease;
+  width: 320px;
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.card.active {
+  transform: scale(1.05);
+  box-shadow: 0 12px 40px rgba(0, 212, 255, 0.4);
+}
+
+.cardImage {
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.card:hover .image {
+  transform: scale(1.1);
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+}
+
+.cardContent {
+  padding: 25px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card Header with Icon and Title */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.cardHeader h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: #fff;
+}
+
+.icon {
+  font-size: 28px;
+  background: rgba(255, 255, 255, 0.2);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* List Style */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  flex: 1;
+}
+
+.list li {
+  margin-bottom: 15px;
+  font-size: 16px;
+  line-height: 1.6;
+  position: relative;
+  padding-left: 25px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Bullet point styling */
+.list li::before {
+  content: "▹";
+  color: #00d4ff;
+  position: absolute;
+  left: 0;
+  font-size: 18px;
+}
+
+/* Background elements */
+.certificates::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+  z-index: 1;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+
+/* Tablet Viewport */
+@media (max-width: 1024px) {
+  .cardContainer {
+    gap: 20px;
+  }
+
+  .card {
+    width: 300px;
+    min-height: 420px;
+  }
+}
+
+/* Mobile Viewport */
+@media (max-width: 768px) {
+  .certificates {
+    padding: 60px 15px;
+    min-height: auto;
+  }
+
+  .title {
+    font-size: 2rem;
+    margin-bottom: 40px;
+  }
+
+  .cardContainer {
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 400px;
+    min-height: 380px;
+  }
+}
+
+/* Small Mobile Viewport */
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .card {
+    min-height: 350px;
+  }
+
+  .cardHeader h3 {
+    font-size: 1.3rem;
+  }
+
+  .list li {
+    font-size: 14px;
+    padding-left: 20px;
+  }
+}
