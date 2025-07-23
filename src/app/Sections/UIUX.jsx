@@ -1,44 +1,50 @@
 import React from 'react';
 import styles from './UIUX.module.css';
-
+import DaysAttendance from '../../../public/assets/100DaysAttendance.jpg';
+import Blooddrop from '../../../public/assets/bloodrop.png';
+import WealthMap from '../../../public/assets/Home.png'; 
+import Farmers from '../../../public/assets/image.png';
+import Inst from '../../../public/assets/Insta.png';
+import Image from 'next/image';
 const UIUX = () => {
-  const uiuxProjects = [
-    {
-      id: 1,
-      image: 'https://via.placeholder.com/280x380',
-      borderColor: '#ff0000',
-      title: 'E-commerce Redesign',
-      description: 'Modernized checkout flow increasing conversions by 32%'
-    },
-    {
-      id: 2,
-      image: 'https://via.placeholder.com/280x380',
-      borderColor: '#00ff00',
-      title: 'Health App Dashboard',
-      description: 'Data visualization for better user engagement'
-    },
-    {
-      id: 3,
-      image: 'https://via.placeholder.com/280x380',
-      borderColor: '#ffff00',
-      title: 'Banking Interface',
-      description: 'Simplified transaction process for millennials'
-    },
-    {
-      id: 4,
-      image: 'https://via.placeholder.com/280x380',
-      borderColor: '#800080',
-      title: 'AR Fashion Experience',
-      description: 'Virtual try-on with 94% customer satisfaction'
-    },
-    {
-      id: 5,
-      image: 'https://via.placeholder.com/280x380',
-      borderColor: '#0000ff',
-      title: 'Smart Home Control',
-      description: 'Intuitive IoT device management interface'
-    },
-  ];
+const uiuxProjects = [
+  {
+    id: 1,
+    image: Blooddrop, // Blood donation system
+    borderColor: '#ff0000',
+    title: 'Blooddrop - Emergency Blood Portal',
+    description: 'UX for seamless donor registration and emergency blood tracking across centers.'
+  },
+  {
+    id: 2,
+    image: DaysAttendance, // 100daysAttendance
+    borderColor: '#00ff00',
+    title: '100daysAttendance - MGNREGA Workers',
+    description: 'Simplified attendance marking and auto-report generation for rural workers.'
+  },
+  {
+    id: 3,
+    image: WealthMap, // WealthMap
+    borderColor: '#ffff00',
+    title: 'WealthMap - Land Management UI',
+    description: 'Map-based interface to visualize and manage land listings for sale or purchase.'
+  },
+  {
+    id: 4,
+    image: Farmers, // Farmers Market (Smart India Hackathon)
+    borderColor: '#800080',
+    title: 'Farmers Market App UI',
+    description: 'Direct-to-customer produce selling platform with crop pre-posting & live pricing.'
+  },
+  {
+    id: 5,
+    image: Inst, // TodoApp-Realtime Tracker
+    borderColor: '#0000ff',
+    title: 'TodoApp - Realtime Task Tracker',
+    description: 'Daily routine planner with live time tracking and productivity insights.'
+  },
+];
+
 
   return (
     <section className={styles.uiux} id='uiux'>
@@ -52,12 +58,17 @@ const UIUX = () => {
             data-index={project.id}
           >
             <div className={styles.cardContent}>
-              <img
-                src={project.image}
-                alt={`UI/UX Project ${project.id}`}
-                className={styles.cardImage}
-                loading="lazy"
-              />
+             <Image
+  src={project.image}
+  alt={`UI/UX Project ${project.title}`}
+  className={styles.cardImage}
+  loading="lazy"
+  width={300} // adjust as needed
+  height={200} // adjust as needed
+  style={{ objectFit: 'cover', width: '100%', height: 'auto' }}
+/>
+
+
               <div className={styles.cardOverlay}>
                 <h3>{project.title}</h3>
                 <p>{project.description}</p>

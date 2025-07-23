@@ -5,64 +5,65 @@ import styles from './Projects.module.css';
 
 const Projects = () => {
   const projects = [
-    {
-      id: 1,
-      image: 'https://eu-images.contentstack.com/v3/assets/blt31d6b0704ba96e9d/bltaa598dc97ec9e706/6597fd8f32f406040aed7473/GettyImages-1786604582.jpg',
-      duration: '2022',
-      name: 'Blooddrop',
-      description: [
-        'Blooddrop Project: Patient Feeding System.',
-        'Connected blood donation banks and emergency centers.',
-        'User Registration & Donor Management.',
-        'Emergency Blood across blood banks & APSAC.',
-        'Technologies Used: React.js, Node.js.',
-      ],
-      technologies: 'React.js, Node.js, MongoDB, Firebase',
-      rotation: '4deg'
-    },
-    {
-      id: 2,
-      image: 'https://static.euronews.com/articles/stories/08/34/38/20/1200x675_cmsv2_f11ea645-3171-5463-97c2-2dc13e93c2d8-8343820.jpg',
-      duration: '2024',
-      name: 'Farmers Market',
-      description: [
-        'Smart India Hackathon - Farmers App.',
-        'Developed to allow farmers to sell produce directly.',
-        'Crop Pre-posting & Price Alerts middleware.',
-        'Real-time updates & Donor Market.',
-      ],
-      technologies: 'React.js, Node.js, Firebase, MongoDB, Tailwind CSS',
-      rotation: '-4deg'
-    },
-    {
-      id: 3,
-      image: 'https://www.topgear.com/sites/default/files/2022/10/RR_Spectre_Shot_02_Front_3QTR.jpg',
-      duration: '2023',
-      name: 'Women Works',
-      description: [
-        'Completed a system for tracking.',
-        'Managed a team & coordinated development.',
-        'Worked on frontend UI/UX improvements.',
-        'Technologies Used: React.js, Node.js.',
-      ],
-      technologies: 'React.js, Node.js, MongoDB',
-      rotation: '3deg'
-    },
-    {
-      id: 4,
-      image: 'https://example.com/new-image.jpg',
-      duration: '2025',
-      name: 'New Project',
-      description: [
-        'New innovative project description.',
-        'Connecting new features.',
-        'User engagement system.',
-        'Technologies Used: React.js, Node.js.',
-      ],
-      technologies: 'React.js, Node.js, MongoDB',
-      rotation: '2deg'
-    },
-  ];
+  {
+    id: 1,
+    image: 'https://static.vecteezy.com/system/resources/previews/008/191/708/non_2x/human-blood-donate-and-heart-rate-on-white-background-free-vector.jpg',
+    duration: '2022',
+    name: 'Blooddrop',
+    description: [
+      'Blooddrop Project: Patient Feeding System.',
+      'Connected blood donation banks and emergency centers.',
+      'User Registration & Donor Management.',
+      'Emergency Blood across blood banks & APSAC.',
+      'Technologies Used: React.js, Node.js.',
+    ],
+    technologies: 'React.js, Node.js, MongoDB, Firebase',
+    rotation: '4deg'
+  },
+  {
+    id: 2,
+    image: 'https://empmonitor.com/blog/wp-content/uploads/2020/04/Employee-Attendance-Tracking-Guide-for-2020-.png',
+    duration: '2024',
+    name: '100daysAttendance',
+    description: [
+      'Attendance application for MGNREGA workers.',
+      'Smart present/not marking system.',
+      'Auto-generated attendance reports.',
+      'Streamlined for rural employment tracking.',
+    ],
+    technologies: 'Next.js, Tailwind CSS',
+    rotation: '-4deg'
+  },
+  {
+    id: 3,
+    image: 'https://www.wideopencountry.com/wp-content/uploads/sites/4/2017/09/Capture-1.jpg?resize=890%2C736',
+    duration: '2024',
+    name: 'WealthMap',
+    description: [
+      'US client task application.',
+      'Visualize land assets for buying or selling.',
+      'Interactive map-based land management.',
+      'Quick view of market-available lands.',
+    ],
+    technologies: 'Vite, React.js, Tailwind CSS',
+    rotation: '3deg'
+  },
+  {
+    id: 4,
+    image: 'https://play-lh.googleusercontent.com/KNKGRR45kH6DQgsrtBxMZeMqXRatjLZtxxYFhPDijvE9IKkF-CiQlLaAZf3KhmVQhNSq=w240-h480-rw',
+    duration: '2025',
+    name: 'TodoApp-Realtime Tracker',
+    description: [
+      'Daily task manager with time tracking.',
+      'Real-time task monitoring & updates.',
+      'Helps build routine habits and productivity.',
+      'User-friendly dashboard interface.',
+    ],
+    technologies: 'Next.js, Tailwind CSS',
+    rotation: '2deg'
+  },
+];
+
 
   const gridRef = useRef(null);
 
