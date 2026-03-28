@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './ProjectDetail.module.css';
 
 export default function ProjectDetailClient({ project }) {
@@ -51,7 +52,15 @@ export default function ProjectDetailClient({ project }) {
           </div>
         </div>
         <div className={styles.heroImageWrap}>
-          <img src={project.image} alt={project.name} className={styles.heroImage} />
+          <Image 
+            src={project.image} 
+            alt={project.name} 
+            className={styles.heroImage} 
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority
+            style={{ objectFit: 'cover' }}
+          />
         </div>
       </section>
 

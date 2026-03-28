@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { projectsData } from '../data/projectsData';
 import styles from './projects.module.css';
+import Image from 'next/image';
 
 export const metadata = {
   title: 'Projects — Rajesh Puchakayal',
@@ -32,7 +33,8 @@ export default function ProjectsIndexPage() {
             style={{ animationDelay: `${i * 0.08}s` }}
           >
             <div className={styles.cardImageWrap}>
-              <img src={project.image} alt={project.name} className={styles.cardImg} />
+              <Image
+               src={project.image} alt={project.name} className={styles.cardImg} />
               <span className={styles.yearBadge}>{project.year}</span>
             </div>
             <div className={styles.cardBody}>

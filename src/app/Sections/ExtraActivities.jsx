@@ -1,6 +1,7 @@
 "use client"
 import React from 'react';
 import styles from './ExtraActivities.module.css';
+import Image from 'next/image';
 import channelsProfile from '../assets/channels_profile.jpg'; // Placeholder image, replace with actual
 const ExtraActivities = () => {
   return (
@@ -12,10 +13,13 @@ const ExtraActivities = () => {
         {/* Left side - Circular image with YouTube logo */}
         <div className={styles.imageContainer}>
           <div className={styles.profileCircle}>
-            <img 
+            <Image 
               src="https://yt3.ggpht.com/Sv8kxhfO1xRk4xyEf0gr3WmBJazjxfLwHiRw0JUgeJKO0fraM8tXogt6vCmDWz9k88RJ1VK46A=s108-c-k-c0x00ffffff-no-rj" 
               alt="Profile" 
               className={styles.profileImage}
+              width={300}
+              height={300}
+              style={{ objectFit: 'cover' }}
             />
             <div className={styles.youtubeLogo}>
               <svg viewBox="0 0 24 24">

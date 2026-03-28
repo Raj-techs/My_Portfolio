@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Skills.module.css';
+import Image from 'next/image';
 
 const Skills = () => {
   // Array of skills with placeholder image URLs (replace with actual image sources)
@@ -57,7 +58,14 @@ const Skills = () => {
   return (
     <div key={index} className={styles.skillItem} style={getPosition(item.row, item.indexInRow)}>
       <div className={styles.circleGradient}></div>
-      <img src={skill.image} alt={skill.name} className={styles.skillImage} />
+      <Image 
+        src={skill.image} 
+        alt={skill.name} 
+        className={styles.skillImage} 
+        width={140}
+        height={140}
+        style={{ objectFit: 'contain' }}
+      />
     </div>
   );
 })}

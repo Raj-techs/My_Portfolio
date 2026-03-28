@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import styles from './Projects.module.css';
 import { projectsData } from '../data/projectsData';
@@ -43,7 +44,16 @@ function ProjectsInner() {
         >
           <div className={styles.cardGlow}></div>
           <div className={styles.cardContent}>
-            <img src={project.image} alt={project.name} className={styles.cardImage} />
+            <div className={styles.cardImageWrapper}>
+              <Image 
+                src={project.image} 
+                alt={project.name} 
+                className={styles.cardImage}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
             <div className={styles.contentWrapper}>
               <div className={styles.duration}>{project.year}</div>
               <div className={styles.projectName}>{project.name}</div>

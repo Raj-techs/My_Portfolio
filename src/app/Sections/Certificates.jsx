@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './Certificates.module.css';
 import { motion, useInView } from 'framer-motion';
+import Image from 'next/image';
 
 const Certificates = () => {
   const data = [
@@ -70,10 +71,13 @@ const Certificates = () => {
             onHoverEnd={() => setActiveCard(null)}
           >
             <div className={styles.cardImage}>
-              <img
+              <Image
                 src={item.img}
                 alt={item.title}
                 className={styles.image}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                style={{ objectFit: 'cover' }}
               />
               <div className={styles.imageOverlay}></div>
             </div>
