@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rajesh | Interactive Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --text-color: #ffffff;
+      --dim-color: #333333;
+      --accent-gradient: linear-gradient(135deg, #00c6ff, #0072ff);
+      --bg-color: #050505;
+      --cursor-size: 400px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      height: 100vh;
+      width: 100vw;
+      background-color: var(--bg-color);
+      /* Subtle animated grain */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: none; /* Hide default cursor */
+    }
+
+    /* --- The Interactive Cursor Blob --- */
+    .cursor-blob {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--cursor-size);
+      height: var(--cursor-size);
+      background: radial-gradient(circle, rgba(0, 114, 255, 0.15), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      mix-blend-mode: screen;
+      /* We will animate this via JS for smoothness */
+    }
+    
+    /* Small dot for precision */
+    .cursor-dot {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 100;
+      mix-blend-mode: difference;
+      transition: transform 0.2s ease;
+    }
+
+    /* --- The Name Container --- */
+    .container {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .name-wrapper {
+      display: flex;
+      gap: 0.5vw; /* Spacing between letters */
+      perspective: 1000px;
+    }
+
+    /* --- The Letters --- */
+    .letter {
+      font-size: clamp(4rem, 15vw, 12rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      color: transparent;
+      /* The Outline Effect */
+      -webkit-text-stroke: 2px rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-style: preserve-3d;
+    }
+
+    /* Hover State for the Active Letter */
+    .letter:hover {
+      -webkit-text-stroke: 0px; /* Remove outline */
+      color: white;             /* Fill with white */
+      transform: scale(1.15) translateY(-20px) rotateX(10deg);
+      text-shadow: 
+        0 0 30px rgba(0, 198, 255, 0.6),
+        0 0 60px rgba(0, 114, 255, 0.4);
+    }
+    
+    /* THE FOCUS EFFECT: Fade out non-hovered letters */
+    .name-wrapper:hover .letter:not(:hover) {
+      opacity: 0.2;
+      transform: scale(0.95) blur(2px);
+      filter: blur(4px);
+    }
+
+    /* --- Description Text --- */
+    .desc-container {
+      height: 60px; /* Fixed height to prevent layout jumps */
+      margin-top: 40px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .description {
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #a5d8ff;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .description.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Mobile handling */
+    @media (max-width: 768px) {
+      .letter { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3); }
+      .cursor-blob, .cursor-dot { display: none; }
+      body { cursor: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor-blob" id="blob"></div>
+  <div class="cursor-dot" id="dot"></div>
+
+  <div class="container">
+    <div class="name-wrapper" id="name-wrapper">
+      </div>
+    
+    <div class="desc-container">
+      <div class="description" id="desc-text"></div>
+    </div>
+  </div>
+
+  <script>
+    // Configuration
+    const nameText = "RAJESH";
+    const meanings = {
+      'R': "React King",
+      'A': "Always Learning",
+      'J': "JavaScript & Java Beast",
+      'E': "Everything Connected",
+      'S': "Smooth & Fast",
+      'H': "Hard Worker"
+    };
+
+    const wrapper = document.getElementById('name-wrapper');
+    const descText = document.getElementById('desc-text');
+    const blob = document.getElementById('blob');
+    const dot = document.getElementById('dot');
+
+    // 1. Build the Text Structure
+    [...nameText].forEach(char => {
+      const span = document.createElement('span');
+      span.className = 'letter';
+      span.textContent = char;
+      span.dataset.char = char;
+      wrapper.appendChild(span);
+
+      // Mouse Enter
+      span.addEventListener('mouseenter', () => {
+        // Update text
+        if(meanings[char]) {
+          descText.textContent = meanings[char];
+          descText.classList.add('visible');
+        }
+        // Scale cursor dot
+        dot.style.transform = "scale(3)";
+      });
+
+      // Mouse Leave
+      span.addEventListener('mouseleave', () => {
+        descText.classList.remove('visible');
+        dot.style.transform = "scale(1)";
+      });
+    });
+
+    // 2. Smooth Cursor Animation (Linear Interpolation)
+    let mouseX = 0, mouseY = 0;
+    let blobX = 0, blobY = 0;
+    let dotX = 0, dotY = 0;
+
+    // Track actual mouse position
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      
+      // Dot moves instantly
+      dotX = mouseX;
+      dotY = mouseY;
+      dot.style.left = `${dotX}px`;
+      dot.style.top = `${dotY}px`;
+    });
+
+    // Animate the heavy blob with delay
+    function animate() {
+      // Lerp formula: current + (target - current) * speed
+      blobX += (mouseX - blobX) * 0.1; // 0.1 is the speed (lower is smoother/slower)
+      blobY += (mouseY - blobY) * 0.1;
+
+      blob.style.left = `${blobX}px`;
+      blob.style.top = `${blobY}px`;
+
+      requestAnimationFrame(animate);
+    }
+    
+    animate();
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio OS</title>
+    <style>
+        /* --- RESET & BODY --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; user-select: none; -webkit-tap-highlight-color: transparent;}
+        
+        body {
+            background-color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- IPHONE CHASSIS --- */
+        .iphone-frame {
+            width: 350px;
+            height: 700px;
+            background: #000;
+            border-radius: 55px;
+            padding: 12px;
+            box-shadow: 0 0 0 2px #333, 0 30px 60px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1000&auto=format&fit=crop') no-repeat center center/cover;
+            border-radius: 44px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- STATUS BAR (Fixed) --- */
+        .status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end; /* Align to bottom of bar */
+            padding: 0 25px 12px 25px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-right {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* SVG Icons for Wifi/Battery */
+        .icon-svg { width: 18px; height: 18px; fill: white; }
+
+        /* The Notch */
+        .notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            background: black;
+            border-bottom-left-radius: 18px;
+            border-bottom-right-radius: 18px;
+            z-index: 101;
+        }
+
+        /* --- SWIPEABLE CONTAINER --- */
+        /* This is the magic wrapper that allows horizontal swiping */
+        .os-slider {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory; /* Forces stop on pages */
+            scroll-behavior: smooth;
+        }
+
+        /* Hide Scrollbar */
+        .os-slider::-webkit-scrollbar { display: none; }
+        .os-slider { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* --- INDIVIDUAL PAGES --- */
+        .page {
+            min-width: 100%;
+            height: 100%;
+            padding: 70px 20px 80px 20px; /* Space for status bar and dock */
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-title {
+            color: rgba(255,255,255,0.9);
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            opacity: 0; /* Hidden initially for splash */
+            transform: translateY(10px);
+            transition: 0.5s ease;
+        }
+
+        /* Grid for Apps */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px 10px;
+        }
+
+        /* --- APP ICONS --- */
+        .app-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            opacity: 0; /* Hidden initially for splash */
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .app-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-size: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .app-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px; }
+        .app-icon.padding img { width: 65%; height: 65%; object-fit: contain; }
+
+        .app-name { font-size: 11px; color: white; text-align: center; text-shadow: 0 1px 2px black;}
+
+        /* --- ANIMATION CLASS (SPLASH) --- */
+        /* JS adds this class when page is visible */
+        .page.in-view .page-title { opacity: 1; transform: translateY(0); }
+        .page.in-view .app-item { opacity: 1; transform: translateY(0); }
+        
+        /* Staggered delays for "Splash" effect */
+        .page.in-view .app-item:nth-child(1) { transition-delay: 0.1s; }
+        .page.in-view .app-item:nth-child(2) { transition-delay: 0.15s; }
+        .page.in-view .app-item:nth-child(3) { transition-delay: 0.2s; }
+        .page.in-view .app-item:nth-child(4) { transition-delay: 0.25s; }
+        .page.in-view .app-item:nth-child(5) { transition-delay: 0.3s; }
+
+        /* --- SOCIAL MEDIA PAGE SPECIFIC --- */
+        .social-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .social-row {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 16px;
+            gap: 15px;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .social-row:active { background: rgba(255,255,255,0.3); }
+        .social-text { color: white; font-weight: 500; font-size: 16px; }
+
+        /* --- PROJECT DETAIL OVERLAY (Same as before) --- */
+        .project-modal {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff;
+            z-index: 200;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+            display: flex; flex-direction: column;
+        }
+        .project-modal.active { transform: translateY(0); }
+
+        .modal-header {
+            padding: 50px 20px 15px;
+            background: rgba(255,255,255,0.9);
+            border-bottom: 1px solid #eee;
+            display: flex; align-items: center; gap: 10px;
+            backdrop-filter: blur(10px);
+        }
+        .close-btn { font-size: 24px; color: #007aff; cursor: pointer; border: none; background: none;}
+        .modal-title { font-size: 18px; font-weight: bold; }
+        .modal-content { padding: 20px; overflow-y: auto; flex: 1; }
+
+        /* --- PAGINATION DOTS --- */
+        .dots-container {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            z-index: 90;
+        }
+        .dot { width: 8px; height: 8px; background: rgba(255,255,255,0.4); border-radius: 50%; transition: 0.3s; }
+        .dot.active { background: white; width: 8px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="iphone-frame">
+        <div class="screen">
+            <div class="notch"></div>
+
+            <div class="status-bar">
+                <div id="clock">12:00</div>
+                <div class="status-right">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C7.95 2 4.21 3.34 1.16 5.61L12 19.11 22.84 5.61C19.79 3.34 16.05 2 12 2Z"/></svg>
+                    <svg class="icon-svg" viewBox="0 0 24 24" style="transform: rotate(90deg);"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+                </div>
+            </div>
+
+            <div class="os-slider" id="slider">
+
+                <div class="page" id="p1">
+                    <div class="page-title">Figma UI</div>
+                    <div class="app-grid">
+                        <div class="app-item" onclick="openModal('Dashboard UI', 'Figma project 1 details...')">
+                            <div class="app-icon padding"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"></div>
+                            <span class="app-name">Dashboard</span>
+                        </div>
+                        <div class="app-item" onclick="openModal('Mobile App', 'Figma project 2 details...')">
+                            <div class="app-icon padding"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"></div>
+                            <span class="app-name">Mobile</span>
+                        </div>
+                        <div class="app-item" onclick="openModal('Wireframes', 'Figma project 3 details...')">
+                            <div class="app-icon padding"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"></div>
+                            <span class="app-name">Wires</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="p2">
+                    <div class="page-title">MERN Stack</div>
+                    <div class="app-grid">
+                        <div class="app-item" onclick="openModal('E-Commerce', 'MERN project 1 details...')">
+                            <div class="app-icon padding" style="background:#222"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"></div>
+                            <span class="app-name">Shop App</span>
+                        </div>
+                        <div class="app-item" onclick="openModal('Chat App', 'MERN project 2 details...')">
+                            <div class="app-icon padding" style="background:#222"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"></div>
+                            <span class="app-name">Chat</span>
+                        </div>
+                         <div class="app-item" onclick="openModal('Admin Panel', 'MERN project 3 details...')">
+                            <div class="app-icon padding" style="background:#222"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"></div>
+                            <span class="app-name">Admin</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="p3">
+                    <div class="page-title">Blender 3D</div>
+                    <div class="app-grid">
+                         <div class="app-item" onclick="openModal('Character', 'Blender project 1 details...')">
+                            <div class="app-icon padding" style="background:#e67e22"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/blender/blender-original.svg"></div>
+                            <span class="app-name">Char</span>
+                        </div>
+                         <div class="app-item" onclick="openModal('Environment', 'Blender project 2 details...')">
+                            <div class="app-icon padding" style="background:#e67e22"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/blender/blender-original.svg"></div>
+                            <span class="app-name">Env</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="p4">
+                    <div class="page-title">Framer</div>
+                    <div class="app-grid">
+                        <div class="app-item" onclick="openModal('Portfolio v1', 'Framer project details...')">
+                            <div class="app-icon" style="background:white; color:black;"><b>F</b></div>
+                            <span class="app-name">Port v1</span>
+                        </div>
+                        <div class="app-item" onclick="openModal('Landing Page', 'Framer project details...')">
+                            <div class="app-icon" style="background:white; color:black;"><b>F</b></div>
+                            <span class="app-name">Landing</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="p5">
+                    <div class="page-title">Connect</div>
+                    <div class="social-list">
+                        <div class="app-item social-row" style="flex-direction:row; opacity:0">
+                            <div class="app-icon padding" style="width:40px; height:40px; background:white;">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg">
+                            </div>
+                            <span class="social-text">YouTube</span>
+                        </div>
+                        
+                        <div class="app-item social-row" style="flex-direction:row; opacity:0">
+                            <div class="app-icon padding" style="width:40px; height:40px; background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);">
+                                <svg fill="white" viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            </div>
+                            <span class="social-text">Instagram</span>
+                        </div>
+
+                        <div class="app-item social-row" style="flex-direction:row; opacity:0">
+                             <div class="app-icon padding" style="width:40px; height:40px; background:#0077b5;">
+                                <svg fill="white" viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/></svg>
+                             </div>
+                            <span class="social-text">LinkedIn</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="dots-container" id="dots">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+
+            <div class="project-modal" id="modal">
+                <div class="modal-header">
+                    <button class="close-btn" onclick="closeModal()">&#8592;</button>
+                    <span class="modal-title" id="mTitle">Title</span>
+                </div>
+                <div class="modal-content" id="mContent">
+                    <p>Details...</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        /* --- 1. Real-time Clock --- */
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('clock').innerText = timeString;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        /* --- 2. Modal Logic --- */
+        const modal = document.getElementById('modal');
+        const mTitle = document.getElementById('mTitle');
+        const mContent = document.getElementById('mContent');
+
+        function openModal(title, text) {
+            mTitle.innerText = title;
+            mContent.innerHTML = `<h2>${title}</h2><br><p>${text}</p><p>This is where you would put screenshots and descriptions.</p>`;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        /* --- 3. Intersection Observer (Splash Effect) --- */
+        const pages = document.querySelectorAll('.page');
+        const dots = document.querySelectorAll('.dot');
+        const slider = document.getElementById('slider');
+
+        // Observer checks which page is visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Add animation class
+                    entry.target.classList.add('in-view');
+                    
+                    // Update Dots
+                    const index = Array.from(pages).indexOf(entry.target);
+                    dots.forEach(d => d.classList.remove('active'));
+                    if(dots[index]) dots[index].classList.add('active');
+                } else {
+                    // Remove class so it re-animates when you come back
+                    entry.target.classList.remove('in-view');
+                }
+            });
+        }, {
+            root: slider,
+            threshold: 0.5 // Trigger when 50% of the page is visible
+        });
+
+        pages.forEach(page => observer.observe(page));
+
+    </script>
+</body>
+</html>
