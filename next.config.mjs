@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  turbopack: {
+    root: 'c:\\Users\\Rajesh Puchakayal\\Desktop\\raj\\test\\next\\my-portfolio-next',
+  },
   images: {
     remotePatterns: [
       {
@@ -73,6 +76,14 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'yt3.ggpht.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'empmonitor.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.wideopencountry.com',
       },
     ],
   },

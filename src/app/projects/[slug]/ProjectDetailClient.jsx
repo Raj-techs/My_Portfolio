@@ -13,8 +13,12 @@ export default function ProjectDetailClient({ project }) {
     return () => clearTimeout(t);
   }, []);
 
-  const driveEmbedUrl = project.demoVideoEmbed
-    ? project.demoVideoEmbed.replace('/view?usp=sharing', '/preview').replace('/view', '/preview')
+  const isYouTube = project.demoVideo?.includes('youtube.com') || project.demoVideo?.includes('youtu.be');
+
+  const embedUrl = project.demoVideoEmbed
+    ? project.demoVideoEmbed.includes('drive.google.com')
+      ? project.demoVideoEmbed.replace('/view?usp=sharing', '/preview').replace('/view', '/preview')
+      : project.demoVideoEmbed
     : null;
 
   return (
@@ -65,20 +69,20 @@ export default function ProjectDetailClient({ project }) {
       </section>
 
       {/* ── Demo Video ── */}
-      {driveEmbedUrl && (
+      {embedUrl && (
         <section className={styles.videoSection}>
           <h2 className={styles.sectionHeading}>📽 Demo Video</h2>
           <div className={styles.videoWrapper}>
             <iframe
-              src={driveEmbedUrl}
+              src={embedUrl}
               className={styles.videoFrame}
-              allow="autoplay"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               title={`${project.name} Demo`}
             />
           </div>
           <a href={project.demoVideo} target="_blank" rel="noreferrer" className={styles.watchLink}>
-            ↗ Open in Google Drive
+            {isYouTube ? '↗ Watch on YouTube' : '↗ Open in Google Drive'}
           </a>
         </section>
       )}

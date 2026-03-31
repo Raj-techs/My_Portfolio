@@ -11,8 +11,8 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80',
     year: '2025',
     technologies: ['React.js', 'Node.js', 'MongoDB', 'Express', 'Socket.io', 'Tailwind CSS', 'Vercel', 'Render'],
-    demoVideo: 'https://drive.google.com/file/d/1eCTOpCUkRxQZZRs6SL37iLPqYqtNxu_5/view?usp=sharing',
-    demoVideoEmbed: 'https://drive.google.com/file/d/1eCTOpCUkRxQZZRs6SL37iLPqYqtNxu_5/preview',
+    demoVideo: 'https://www.youtube.com/watch?v=CLU7DqQGJVw',
+    demoVideoEmbed: 'https://www.youtube.com/embed/CLU7DqQGJVw',
     liveUrl: '',
     githubUrl: 'https://github.com/Raj-techs/SmartServe.git',
     overview:
